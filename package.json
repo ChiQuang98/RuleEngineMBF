@@ -1,0 +1,11 @@
+{
+  "name": "RuleEngineMBF",
+  "version": "1.0.0",
+  "dependencies": {
+    "connect-livereload": "^0.6.1",
+    "node-red": "^2.0.3",
+    "node-red-contrib-temp": "file:D:/node_custom/node-red-contrib-temp",
+    "node-red-node-email": "^1.12.3",
+    "sync-request": "^6.1.0"
+  }
+}
