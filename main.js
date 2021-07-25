@@ -137,8 +137,6 @@ app.get('/getChannelsByUser/:token', (req, res) => {
             // console.log(rs.errorCode);
             console.log(response.statusCode);
             if (response.statusCode == 200) {
-                // console.log("IN QUANGgggggggg")
-                // console.log(rs)
                 res.send(rs)
             }
             else {
@@ -159,7 +157,6 @@ app.get('/', (req, res) => {
 });
 app.get('/nodered/:token/:flowid', (req, res) => {
     var stringToken = req.params.token.split(" ")[1];
-    console.log("TOKENQUANG: "+stringToken)
     res.cookie('TokenUser',stringToken, {
         maxAge: 60*60*60*24*1000,
         httpOnly: false,
@@ -176,11 +173,8 @@ app.get('/nodered/:token/:flowid', (req, res) => {
 });
 app.post('/nodered', (req, res) => {
     // console.log(req.header.Authorization)
-    console.log(req.get('authorization'))
     req.session.token = req.get('authorization');
     res.redirect('/red?a=1');
-    // /Qua
-
 });
 
 // Parse URL-encoded bodies (as sent by HTML forms)
