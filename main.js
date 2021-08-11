@@ -135,14 +135,12 @@ app.get('/getChannelsByUser/:token', (req, res) => {
             // return rs
             // console.log(rs)
             // console.log(rs.errorCode);
-            console.log(response.statusCode);
+            // console.log(response.statusCode);
             if (response.statusCode == 200) {
                 res.send(rs)
             }
             else {
                 res.send('Error get List')
-                console.log("OUT QUANG")
-
             }
         });
 
@@ -181,7 +179,6 @@ app.post('/nodered', (req, res) => {
 // app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
 // app.use(express.json());
-console.log("HOST"+process.env.HOST_SERVER)
 server.listen(8000,"0.0.0.0");
 
 RED.start();
