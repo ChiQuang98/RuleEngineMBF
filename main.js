@@ -9,7 +9,11 @@ var crypto = require('crypto');
 var livereload  = require("connect-livereload");
 // Create an Express app
 var app = express();
+var bodyParser = require('body-parser')
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(cookieParser());
+
 //JSON object to be added to cookie
 let users = {
     name : "Ritik",
@@ -109,6 +113,18 @@ app.get('/decrypt/:passtext', (req, res) => {
     var decrypted = decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
     res.send(decrypted)
 });
+app.get('/decrypt/:passtext', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    var algorithm = 'aes256'; // or any other algorithm supported by OpenSSL
+    var key = 'MobifoneKEY2021';
+    var text = req.params.passtext;
+    // var encryptTxt = { iv: iv.toString('hex'),
+    //     encryptedData: text.toString('hex') }
+    var decipher = crypto.createDecipher(algorithm, key);
+    var decrypted = decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
+    res.send(decrypted)
+});
 app.get('/getChannelsByUser/:token', (req, res) => {
     var token =  req.params.token;
     res.header("Access-Control-Allow-Origin", "*");
@@ -149,17 +165,33 @@ app.get('/getChannelsByUser/:token', (req, res) => {
     req1.end();
     // res.send(decrypt(text))
 });
+app.post('/getToken',jsonParser, (req, res) => {
+
+    var username = req.body.username
+    var password = req.body.password
+    console.log(username)
+    console.log(password)
+    if(username==="mobifoneruleengine@mobifone.com"&&password==="bigdataITC"){
+        console.log("INNNN")
+        res.json({token:req.session.token})
+        // res.send(req.session.token)
+    } else {
+        res.json({token:'unauthenticated'})
+        // res.send("unauthenticated")
+    }
+
+});
 app.get('/', (req, res) => {
     res.send("Not found");
 
 });
 app.get('/nodered/:token/:flowid', (req, res) => {
-    var stringToken = req.params.token.split(" ")[1];
-    res.cookie('TokenUser',stringToken, {
-        maxAge: 60*60*60*24*1000,
-        httpOnly: false,
-        path:"/"
-    })
+    // var stringToken = req.params.token.split(" ")[1];
+    // res.cookie('TokenUser',stringToken, {
+    //     maxAge: 60*60*60*24*1000,
+    //     httpOnly: false,
+    //     path:"/"
+    // })
     // res.send('user data added to cookie');
     req.session.token = req.params.token;
     req.session.flowid = req.params.flowid;
